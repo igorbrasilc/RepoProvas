@@ -36,11 +36,10 @@
     "ts-node-dev": "^2.0.0"
   },
   "dependencies": {
-    "-": "^0.0.1",
+    "@prisma/client": "^4.1.0",
     "@types/joi": "^17.2.3",
     "chalk": "^4.1.2",
     "cors": "^2.8.5",
-    "D": "^1.0.0",
     "dotenv": "^16.0.1",
     "dotenv-cli": "^6.0.0",
     "express-async-errors": "^3.1.1",
