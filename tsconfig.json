@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
+    "target": "es6",
     "esModuleInterop": true,
-    "module": "es6",
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "module": "CommonJS",
     "moduleResolution": "node",
     "rootDir": "./src",
     "outDir": "./dist"
@@ -9,5 +13,6 @@
   "ts-node": {
     "esm": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
