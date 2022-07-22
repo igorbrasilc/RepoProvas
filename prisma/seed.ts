@@ -61,7 +61,7 @@ const disciplinesData = [
     termId: 1,
   },
   {
-    name: "Planejament",
+    name: "Planejamento",
     termId: 2,
   },
   {

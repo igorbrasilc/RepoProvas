@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { unauthorizedError } from "../utils/errorUtils";
+import * as userUtils from "../utils/userUtils";
 import AppLog from "../utils/AppLog";
 
 function authValidation(endpoint?: string) {
@@ -13,7 +14,9 @@ function authValidation(endpoint?: string) {
       );
     }
 
-    // you can implement here the auth validation you want to make, like token validation
+    const tokenValidation = userUtils.validateToken(tokenInput);
+    res.locals.user = tokenValidation;
+    res.locals.header = header;
     AppLog("Middleware", `Header for endpoint ${endpoint} processed`);
     return next();
   };
