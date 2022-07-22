@@ -14,8 +14,13 @@ function authValidation(endpoint?: string) {
       );
     }
 
-    const tokenValidation = userUtils.validateToken(tokenInput);
-    res.locals.user = tokenValidation;
+    try {
+      const tokenValidation = userUtils.validateToken(tokenInput);
+      res.locals.user = tokenValidation;
+    } catch (err) {
+      throw unauthorizedError("Error trying to validate token");
+    }
+
     res.locals.header = header;
     AppLog("Middleware", `Header for endpoint ${endpoint} processed`);
     return next();
