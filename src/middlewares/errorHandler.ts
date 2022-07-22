@@ -10,12 +10,12 @@ export default function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  AppLog("Error", err);
-
   if (isAppError(err)) {
     const statusCode = errorTypeToStatusCode(err.type);
+    AppLog("Error", err.message);
     return res.status(statusCode).send(err.message);
   }
 
+  AppLog("Error", "Error not tracked");
   res.sendStatus(500);
 }
