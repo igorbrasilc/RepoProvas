@@ -11,4 +11,12 @@ testRouter.post(
   [validateSchema(schemas.testSchema, "/tests"), authValidation("post /tests")],
   controllers.postTest
 );
+
+testRouter.get("/tests", authValidation("get /tests"), controllers.getTests);
 export default testRouter;
+
+testRouter.get(
+  "/categories",
+  authValidation("get /categories"),
+  controllers.getCategories
+);

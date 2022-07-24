@@ -12,3 +12,7 @@ export type TestInputData = Omit<
   category: CategoryAvailable;
   discipline: DisciplinesAvailable;
 };
+
+export type GetTestQueryData = {
+  groupBy: "disciplines" | "teachers";
+};

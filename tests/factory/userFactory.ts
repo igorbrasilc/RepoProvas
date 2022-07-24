@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { CreateUserData, CreateUserInput } from "../../src/types/userTypes";
 
-const USER_TEST = "igor@igor.com";
+const USER_TEST = "igor@igor.net";
 const PASSWORD_TEST = "0800";
 
 export function createUser(random: boolean = false) {
@@ -9,12 +9,12 @@ export function createUser(random: boolean = false) {
     ? <CreateUserInput>{
         email: faker.internet.email(),
         password: PASSWORD_TEST,
-        confirmPassword: PASSWORD_TEST,
+        passwordConfirmation: PASSWORD_TEST,
       }
     : <CreateUserInput>{
         email: USER_TEST,
         password: PASSWORD_TEST,
-        confirmPassword: PASSWORD_TEST,
+        passwordConfirmation: PASSWORD_TEST,
       };
 }
 
@@ -34,7 +34,7 @@ export function wrongInputSchema() {
   return <CreateUserInput>{
     email: USER_TEST,
     password: PASSWORD_TEST,
-    confirmPassword: "0801",
+    passwordConfirmation: "0801",
   };
 }
 
@@ -49,6 +49,6 @@ export function wrongLoginSchema() {
   return <CreateUserInput>{
     email: USER_TEST,
     password: "0801",
-    confirmPassword: "0801",
+    passwordConfirmation: "0801",
   };
 }

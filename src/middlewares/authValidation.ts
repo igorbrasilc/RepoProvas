@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { unauthorizedError } from "../utils/errorUtils";
 import * as userUtils from "../utils/userUtils";
 import AppLog from "../utils/AppLog";
+import { User } from ".prisma/client";
 
 function authValidation(endpoint?: string) {
   return (req: Request, res: Response, next: NextFunction) => {

@@ -32,3 +32,42 @@ export async function getTeacherDisciplineIdFromDisciplineId(
 export async function postTest(data: Omit<Test, "id">) {
   return prisma.test.create({ data });
 }
+
+export async function getTestsByDisciplines() {
+  return prisma.term.findMany({
+    include: {
+      disciplines: {
+        select: {
+          id: true,
+          name: true,
+          term: {},
+          teacherDisciplines: {
+            select: {
+              id: true,
+              discipline: {},
+              teacher: {},
+              tests: {
+                select: { id: true, name: true, pdfUrl: true, category: {} },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+export async function getCategories() {
+  return prisma.category.findMany();
+}
+
+export async function getTestsByTeachers() {
+  return prisma.teacherDiscipline.findMany({
+    select: {
+      id: true,
+      discipline: {},
+      teacher: {},
+      tests: { select: { id: true, name: true, pdfUrl: true, category: {} } },
+    },
+  });
+}

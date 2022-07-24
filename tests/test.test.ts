@@ -5,12 +5,10 @@ import * as factory from "./factory/testFactory";
 import * as userFactory from "./factory/userFactory";
 
 beforeEach(async () => {
-    await prisma.$executeRaw`TRUNCATE TABLE tests CASCADE`;
-    await prisma.$executeRaw`TRUNCATE TABLE users CASCADE`;
-  });
+  await prisma.$executeRaw`TRUNCATE TABLE users CASCADE`;
+});
 
 describe("Test creation test suite", () => {
-
   it("should create a test when correct info returning 201", async () => {
     const createUserData = userFactory.createUser();
     const userInsertion = await supertest(app)
@@ -53,7 +51,69 @@ describe("Test creation test suite", () => {
       .post("/tests")
       .send(testInput)
       .set("Authorization", `Bearer random`);
-    expect(createTest.statusCode).toBe(401);
+    expect(createTest2.statusCode).toBe(401);
+  });
+
+  it("Given the request with correct headers should return tests by discipline", async () => {
+    const createUserData = userFactory.createUser();
+    const userInsertion = await supertest(app)
+      .post("/sign-up")
+      .send(createUserData);
+    expect(userInsertion.statusCode).toBe(201);
+    const userLogin = userFactory.loginUser();
+    const getToken = await supertest(app).post("/sign-in").send(userLogin);
+    expect(getToken.body.token).not.toBeNull();
+    const getTests = await supertest(app)
+      .get("/tests?groupBy=disciplines")
+      .set("Authorization", `Bearer ${getToken.body.token}`);
+    expect(getTests.body.tests).not.toBeUndefined();
+    expect(getTests.statusCode).toBe(200);
+  });
+
+  it("Given the request with correct headers should return tests by teachers", async () => {
+    const createUserData = userFactory.createUser();
+    const userInsertion = await supertest(app)
+      .post("/sign-up")
+      .send(createUserData);
+    expect(userInsertion.statusCode).toBe(201);
+    const userLogin = userFactory.loginUser();
+    const getToken = await supertest(app).post("/sign-in").send(userLogin);
+    expect(getToken.body.token).not.toBeNull();
+    const getTests = await supertest(app)
+      .get("/tests?groupBy=teachers")
+      .set("Authorization", `Bearer ${getToken.body.token}`);
+    expect(getTests.body.tests).not.toBeUndefined();
+    expect(getTests.statusCode).toBe(200);
+  });
+
+  it("Given the request with incorrect query should return 404", async () => {
+    const createUserData = userFactory.createUser();
+    const userInsertion = await supertest(app)
+      .post("/sign-up")
+      .send(createUserData);
+    expect(userInsertion.statusCode).toBe(201);
+    const userLogin = userFactory.loginUser();
+    const getToken = await supertest(app).post("/sign-in").send(userLogin);
+    expect(getToken.body.token).not.toBeNull();
+    const getTests = await supertest(app)
+      .get("/tests?groupBy=randomText")
+      .set("Authorization", `Bearer ${getToken.body.token}`);
+    expect(getTests.statusCode).toBe(404);
+  });
+
+  it("Given the request with incorrect headers should return 401", async () => {
+    const createUserData = userFactory.createUser();
+    const userInsertion = await supertest(app)
+      .post("/sign-up")
+      .send(createUserData);
+    expect(userInsertion.statusCode).toBe(201);
+    const userLogin = userFactory.loginUser();
+    const getToken = await supertest(app).post("/sign-in").send(userLogin);
+    expect(getToken.body.token).not.toBeNull();
+    const getTests = await supertest(app)
+      .get("/tests?groupBy=randomText")
+      .set("Authorization", `Bearer randomText`);
+    expect(getTests.statusCode).toBe(401);
   });
 });
 

@@ -73,7 +73,7 @@ model Test {
     categoryId Int
     teacherDisciplineId Int
 
-    categories Category @relation(fields: [categoryId], references: [id])
+    category Category @relation(fields: [categoryId], references: [id])
     teacherDisciplines TeacherDiscipline @relation(fields: [teacherDisciplineId], references: [id])
 
     @@map("tests")
